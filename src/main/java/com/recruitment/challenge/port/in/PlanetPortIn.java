@@ -12,7 +12,7 @@ public interface PlanetPortIn {
 
     Page<ReadPlanetDto> findAll(int page, int perPage, PaginatePlanetFilters filters);
 
-    Planet findById(String id);
+    ReadPlanetDto findById(String id);
 
     void deleteById(String id);
 

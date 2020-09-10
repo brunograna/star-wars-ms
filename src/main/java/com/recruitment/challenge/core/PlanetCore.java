@@ -43,7 +43,7 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public Planet findById(String id) {
+    public ReadPlanetDto findById(String id) {
         this.logger.info("find-by-id; start; id=\"{}\";", id);
 
         var planet = this.database.findById(id);
@@ -52,7 +52,7 @@ public class PlanetCore implements PlanetPortIn {
 
         this.logger.info("find-all; end; success; id=\"{}\";", id);
 
-        return planet.get();
+        return new ReadPlanetDto(planet.get());
     }
 
     @Override
