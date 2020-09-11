@@ -31,12 +31,14 @@ public class MongoPlanetDatabaseAdapterOut implements PlanetDatabasePortOut {
     }
 
     @Override
-    public Page<Planet> findAll(int page, int perPage, PaginatePlanetFilters filters) {
+    public Page<Planet> findAll(PaginatePlanetFilters filters) {
         var query = this.buildQuery(filters);
 
-        var pageable = PageRequest.of(page, perPage);
-
+        int page = filters.getPage();
+        int perPage = filters.getPerPage();
         int total = Math.toIntExact(mongoTemplate.count(query, Planet.class));
+
+        var pageable = PageRequest.of(page, perPage);
 
         query.with(pageable);
 

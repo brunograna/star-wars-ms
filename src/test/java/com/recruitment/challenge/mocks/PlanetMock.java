@@ -11,9 +11,9 @@ public class PlanetMock {
 
     public static Planet success() {
         return new Planet()
-                .setName(RandomStringUtils.random(10))
-                .setClimate(RandomStringUtils.random(15))
-                .setGround(RandomStringUtils.random(5))
+                .setName(RandomStringUtils.randomAlphabetic(10))
+                .setClimate(RandomStringUtils.randomAlphabetic(15))
+                .setGround(RandomStringUtils.randomAlphabetic(5))
                 .setFilms(Arrays.asList(FilmMock.success(), FilmMock.success()))
                 .setCreatedAt(Instant.now());
     }

@@ -50,4 +50,14 @@ public class ReadPlanetDto {
     public List<ReadFilmDto> getFilms() {
         return films;
     }
+
+    @Override
+    public String toString() {
+        return "ReadPlanetDto{" +
+                "name='" + name + '\'' +
+                ", climate='" + climate + '\'' +
+                ", ground='" + ground + '\'' +
+                ", films=" + films +
+                '}';
+    }
 }

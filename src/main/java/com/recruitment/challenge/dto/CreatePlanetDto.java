@@ -34,4 +34,13 @@ public class CreatePlanetDto extends SelfValidation<CreatePlanetDto> {
     public String getGround() {
         return ground;
     }
+
+    @Override
+    public String toString() {
+        return "CreatePlanetDto{" +
+                "name='" + name + '\'' +
+                ", climate='" + climate + '\'' +
+                ", ground='" + ground + '\'' +
+                '}';
+    }
 }

@@ -36,5 +36,12 @@ public class ReadFilmDto {
         return openingCrawl;
     }
 
-
+    @Override
+    public String toString() {
+        return "ReadFilmDto{" +
+                "title='" + title + '\'' +
+                ", director='" + director + '\'' +
+                ", openingCrawl='" + openingCrawl + '\'' +
+                '}';
+    }
 }

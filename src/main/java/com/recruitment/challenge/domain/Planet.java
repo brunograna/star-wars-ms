@@ -25,6 +25,11 @@ public class Planet {
 
     private Instant updatedAt;
 
+    public Planet setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public String getId() {
         return id;
     }

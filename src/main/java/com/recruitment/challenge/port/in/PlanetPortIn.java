@@ -6,15 +6,16 @@ import com.recruitment.challenge.dto.PaginatePlanetFilters;
 import com.recruitment.challenge.dto.ReadPlanetDto;
 import org.springframework.data.domain.Page;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 public interface PlanetPortIn {
 
-    Page<ReadPlanetDto> findAll(int page, int perPage, PaginatePlanetFilters filters);
+    Page<ReadPlanetDto> findAll(@NotNull PaginatePlanetFilters filters);
 
-    ReadPlanetDto findById(String id);
+    ReadPlanetDto findById(@NotNull String id);
 
-    void deleteById(String id);
+    void deleteById(@NotNull String id);
 
-    String create(CreatePlanetDto planet);
+    String create(@NotNull CreatePlanetDto planet);
 }

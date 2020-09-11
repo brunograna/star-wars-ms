@@ -12,10 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 public class PlanetCore implements PlanetPortIn {
 
     private final Logger logger = LoggerFactory.getLogger(PlanetCore.class);
@@ -26,11 +31,13 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public Page<ReadPlanetDto> findAll(int page, int perPage, PaginatePlanetFilters filters) {
+    public Page<ReadPlanetDto> findAll(@NotNull PaginatePlanetFilters filters) {
+
+        filters.validate();
 
         this.logger.info("find-all; start;");
 
-        var result = this.database.findAll(page, perPage, filters);
+        var result = this.database.findAll(filters);
 
         this.logger.info("find-all; end; success;");
 
@@ -43,7 +50,7 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public ReadPlanetDto findById(String id) {
+    public ReadPlanetDto findById(@NotNull String id) {
         this.logger.info("find-by-id; start; id=\"{}\";", id);
 
         var planet = this.database.findById(id);
@@ -56,8 +63,10 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(@NotNull String id) {
         this.logger.info("delete-by-id; start; id=\"{}\";", id);
+
+        this.findById(id);
 
         this.database.deleteById(id);
 
@@ -65,7 +74,9 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public String create(CreatePlanetDto planet) {
+    public String create(@NotNull CreatePlanetDto planet) {
+
+        planet.validate();
 
         this.logger.info("create; start; planet=\"{}\";", planet);
 

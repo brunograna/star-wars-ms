@@ -10,8 +10,8 @@ public class FilmMock {
 
     public static Film success() {
         return new Film()
-                .setTitle(RandomStringUtils.random(5))
-                .setDirector(RandomStringUtils.random(10))
-                .setOpeningCrawl(RandomStringUtils.random(50));
+                .setTitle(RandomStringUtils.randomAlphabetic(5))
+                .setDirector(RandomStringUtils.randomAlphabetic(10))
+                .setOpeningCrawl(RandomStringUtils.randomAlphabetic(50));
     }
 }

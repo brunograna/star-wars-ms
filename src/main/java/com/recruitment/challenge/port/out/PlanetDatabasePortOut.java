@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface PlanetDatabasePortOut {
 
-    Page<Planet> findAll(int page, int perPage, PaginatePlanetFilters filters);
+    Page<Planet> findAll(PaginatePlanetFilters filters);
 
     Optional<Planet> findById(String id);
 
