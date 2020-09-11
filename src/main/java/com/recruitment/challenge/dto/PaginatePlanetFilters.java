@@ -2,6 +2,7 @@ package com.recruitment.challenge.dto;
 
 import com.recruitment.challenge.commons.SelfValidation;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.PositiveOrZero;
 
 public class PaginatePlanetFilters extends SelfValidation<PaginatePlanetFilters> {
@@ -10,6 +11,7 @@ public class PaginatePlanetFilters extends SelfValidation<PaginatePlanetFilters>
     private final int page;
 
     @PositiveOrZero
+    @Max(50)
     private final int perPage;
 
     private final String name;

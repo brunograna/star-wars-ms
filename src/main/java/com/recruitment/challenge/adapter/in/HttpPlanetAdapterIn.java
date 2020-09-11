@@ -22,9 +22,9 @@ public class HttpPlanetAdapterIn {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReadPlanetDto>> findAll(@RequestParam("page") int page,
-                                                       @RequestParam("perPage") int perPage,
-                                                       @RequestParam("name") String name) {
+    public ResponseEntity<Page<ReadPlanetDto>> findAll(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                                       @RequestParam(value = "perPage", required = false, defaultValue = "50") int perPage,
+                                                       @RequestParam(value = "name", required = false) String name) {
 
         var response = this.planetPortIn.findAll(new PaginatePlanetFilters(page, perPage, name));
 

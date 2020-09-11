@@ -4,22 +4,26 @@ import com.recruitment.challenge.ChallengeApplication;
 import com.recruitment.challenge.commons.exceptions.NotFoundException;
 import com.recruitment.challenge.dto.CreatePlanetDto;
 import com.recruitment.challenge.dto.ErrorDto;
+import com.recruitment.challenge.dto.PaginatePlanetFilters;
 import com.recruitment.challenge.dto.ReadPlanetDto;
+import com.recruitment.challenge.mocks.PlanetMock;
+import com.recruitment.challenge.mocks.HelperPage;
 import com.recruitment.challenge.port.in.PlanetPortIn;
 import org.junit.jupiter.api.*;
+import org.junit.platform.commons.util.StringUtils;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -234,6 +238,233 @@ class HttpPlanetAdapterInTest {
     @DisplayName("[GET] - /star-wars/v1/planets")
     class FindAll {
 
+        @Captor
+        ArgumentCaptor<PaginatePlanetFilters> filtersArgumentCaptorCaptor;
+
+        @Test
+        public void findAll_shouldFindAllWhenPageAndPerPageIsNotSet() {
+            mockFields();
+            try {
+                var coreOutput = PlanetMock.list(0, 50);
+                doReturn(coreOutput).when(planetPortInMock).findAll(any());
+
+                var response = restTemplate.exchange(
+                        "/star-wars/v1/planets",
+                        GET,
+                        new HttpEntity<>(null),
+                        new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
+
+                verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
+
+                var capturedFilter = filtersArgumentCaptorCaptor.getValue();
+
+                assertEquals(capturedFilter.getPage(), 0);
+                assertEquals(capturedFilter.getPerPage(), 50);
+                assertTrue(StringUtils.isBlank(capturedFilter.getName()));
+
+                assertEquals(response.getStatusCode(), OK);
+                assertNotNull(response.getBody());
+                assertEquals(response.getBody().getNumber(), coreOutput.getNumber());
+                assertEquals(response.getBody().getSize(), coreOutput.getSize());
+                assertEquals(response.getBody().getTotalElements(), coreOutput.getTotalElements());
+                assertEquals(response.getBody().getNumberOfElements(), coreOutput.getNumberOfElements());
+
+                AtomicInteger index = new AtomicInteger();
+                response.getBody().getContent().forEach((planetResponse) -> {
+                    assertEquals(planetResponse.getName(), coreOutput.getContent().get(index.get()).getName());
+                    assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
+                    assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
+
+                    AtomicInteger secondIndex = new AtomicInteger();
+                    planetResponse.getFilms().forEach((filmResponse) -> {
+                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
+                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
+                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
+                        secondIndex.getAndIncrement();
+                    });
+
+                    index.getAndIncrement();
+                });
+
+            } finally {
+                clearMocks();
+            }
+        }
+
+        @Test
+        public void findAll_shouldFindAllWhenPageAndPerPageIsSet() {
+            mockFields();
+            try {
+                var coreOutput = PlanetMock.list(0, 50);
+                doReturn(coreOutput).when(planetPortInMock).findAll(any());
+
+                var url = UriComponentsBuilder
+                        .fromUriString("/star-wars/v1/planets")
+                        .queryParam("page", 1)
+                        .queryParam("perPage", 2)
+                        .build()
+                        .toUriString();
+
+                var response = restTemplate.exchange(
+                        url,
+                        GET,
+                        new HttpEntity<>(null),
+                        new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
+
+                verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
+
+                var capturedFilter = filtersArgumentCaptorCaptor.getValue();
+
+                assertEquals(capturedFilter.getPage(), 1);
+                assertEquals(capturedFilter.getPerPage(), 2);
+                assertTrue(StringUtils.isBlank(capturedFilter.getName()));
+
+                assertEquals(response.getStatusCode(), OK);
+                assertNotNull(response.getBody());
+                assertEquals(response.getBody().getNumber(), coreOutput.getNumber());
+                assertEquals(response.getBody().getSize(), coreOutput.getSize());
+                assertEquals(response.getBody().getTotalElements(), coreOutput.getTotalElements());
+                assertEquals(response.getBody().getNumberOfElements(), coreOutput.getNumberOfElements());
+
+                AtomicInteger index = new AtomicInteger();
+                response.getBody().getContent().forEach((planetResponse) -> {
+                    assertEquals(planetResponse.getName(), coreOutput.getContent().get(index.get()).getName());
+                    assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
+                    assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
+
+                    AtomicInteger secondIndex = new AtomicInteger();
+                    planetResponse.getFilms().forEach((filmResponse) -> {
+                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
+                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
+                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
+                        secondIndex.getAndIncrement();
+                    });
+
+                    index.getAndIncrement();
+                });
+
+            } finally {
+                clearMocks();
+            }
+        }
+
+        @Test
+        public void findAll_shouldFindAllWhenPageAndPerPageIsNotSetAndNameFilterIsSet() {
+            mockFields();
+            try {
+                var coreOutput = PlanetMock.list(0, 50);
+                coreOutput.getContent().get(0).setName("planetName");
+                coreOutput.getContent().get(1).setName("planetName");
+                doReturn(coreOutput).when(planetPortInMock).findAll(any());
+
+                var url = UriComponentsBuilder
+                        .fromUriString("/star-wars/v1/planets")
+                        .queryParam("name", "planetName")
+                        .build()
+                        .toUriString();
+
+                var response = restTemplate.exchange(
+                        url,
+                        GET,
+                        new HttpEntity<>(null),
+                        new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
+
+                verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
+
+                var capturedFilter = filtersArgumentCaptorCaptor.getValue();
+
+                assertEquals(capturedFilter.getPage(), 0);
+                assertEquals(capturedFilter.getPerPage(), 50);
+                assertEquals(capturedFilter.getName(), "planetName");
+
+                assertEquals(response.getStatusCode(), OK);
+                assertNotNull(response.getBody());
+                assertEquals(response.getBody().getNumber(), coreOutput.getNumber());
+                assertEquals(response.getBody().getSize(), coreOutput.getSize());
+                assertEquals(response.getBody().getTotalElements(), coreOutput.getTotalElements());
+                assertEquals(response.getBody().getNumberOfElements(), coreOutput.getNumberOfElements());
+
+                AtomicInteger index = new AtomicInteger();
+                response.getBody().getContent().forEach((planetResponse) -> {
+                    assertEquals(planetResponse.getName(), "planetName");
+                    assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
+                    assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
+
+                    AtomicInteger secondIndex = new AtomicInteger();
+                    planetResponse.getFilms().forEach((filmResponse) -> {
+                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
+                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
+                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
+                        secondIndex.getAndIncrement();
+                    });
+
+                    index.getAndIncrement();
+                });
+
+            } finally {
+                clearMocks();
+            }
+        }
+
+        @Test
+        public void findAll_shouldFindAllWhenPageAndPerPageAndNameFilterIsSet() {
+            mockFields();
+            try {
+                var coreOutput = PlanetMock.list(1, 2);
+                coreOutput.getContent().get(0).setName("planetName");
+                coreOutput.getContent().get(1).setName("planetName");
+                doReturn(coreOutput).when(planetPortInMock).findAll(any());
+
+                var url = UriComponentsBuilder
+                        .fromUriString("/star-wars/v1/planets")
+                        .queryParam("page", 1)
+                        .queryParam("perPage", 2)
+                        .queryParam("name", "planetName")
+                        .build()
+                        .toUriString();
+
+                var response = restTemplate.exchange(
+                        url,
+                        GET,
+                        new HttpEntity<>(null),
+                        new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
+
+                verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
+
+                var capturedFilter = filtersArgumentCaptorCaptor.getValue();
+
+                assertEquals(capturedFilter.getPage(), 1);
+                assertEquals(capturedFilter.getPerPage(), 2);
+                assertEquals(capturedFilter.getName(), "planetName");
+
+                assertEquals(response.getStatusCode(), OK);
+                assertNotNull(response.getBody());
+                assertEquals(response.getBody().getNumber(), coreOutput.getNumber());
+                assertEquals(response.getBody().getSize(), coreOutput.getSize());
+                assertEquals(response.getBody().getTotalElements(), coreOutput.getTotalElements());
+                assertEquals(response.getBody().getNumberOfElements(), coreOutput.getNumberOfElements());
+
+                AtomicInteger index = new AtomicInteger();
+                response.getBody().getContent().forEach((planetResponse) -> {
+                    assertEquals(planetResponse.getName(), "planetName");
+                    assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
+                    assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
+
+                    AtomicInteger secondIndex = new AtomicInteger();
+                    planetResponse.getFilms().forEach((filmResponse) -> {
+                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
+                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
+                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
+                        secondIndex.getAndIncrement();
+                    });
+
+                    index.getAndIncrement();
+                });
+
+            } finally {
+                clearMocks();
+            }
+        }
     }
 
     public void clearMocks() {
