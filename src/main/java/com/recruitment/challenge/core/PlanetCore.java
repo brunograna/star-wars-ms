@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public ReadPlanetDto findById(@NotNull String id) {
+    public ReadPlanetDto findById(@NotBlank String id) {
         this.logger.info("find-by-id; start; id=\"{}\";", id);
 
         var planet = this.database.findById(id);
@@ -63,7 +64,7 @@ public class PlanetCore implements PlanetPortIn {
     }
 
     @Override
-    public void deleteById(@NotNull String id) {
+    public void deleteById(@NotBlank String id) {
         this.logger.info("delete-by-id; start; id=\"{}\";", id);
 
         this.findById(id);
