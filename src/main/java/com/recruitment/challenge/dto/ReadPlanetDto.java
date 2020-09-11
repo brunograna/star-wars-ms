@@ -2,7 +2,6 @@ package com.recruitment.challenge.dto;
 
 import com.recruitment.challenge.domain.Planet;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.stream.Collectors;
 

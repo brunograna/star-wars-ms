@@ -1,10 +1,7 @@
 package com.recruitment.challenge.mocks;
 
 import com.recruitment.challenge.domain.Film;
-import com.recruitment.challenge.domain.Planet;
 import org.apache.commons.lang3.RandomStringUtils;
-
-import java.time.Instant;
 
 public class FilmMock {
 

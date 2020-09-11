@@ -68,7 +68,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public @ResponseBody
-    ResponseEntity handleNotFound(HttpServletRequest req, Exception ex) {
+    ResponseEntity<?> handleNotFound(HttpServletRequest req, Exception ex) {
         logger.warn("handle-not-found; exception; system; exception=\"{}\";", getStackTrace(ex));
         return ResponseEntity.notFound().build();
     }

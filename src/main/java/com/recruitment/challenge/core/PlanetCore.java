@@ -1,9 +1,9 @@
 package com.recruitment.challenge.core;
 
+import com.recruitment.challenge.commons.exceptions.NotFoundException;
 import com.recruitment.challenge.domain.Planet;
 import com.recruitment.challenge.dto.CreatePlanetDto;
 import com.recruitment.challenge.dto.PaginatePlanetFilters;
-import com.recruitment.challenge.commons.exceptions.NotFoundException;
 import com.recruitment.challenge.dto.ReadPlanetDto;
 import com.recruitment.challenge.port.in.PlanetPortIn;
 import com.recruitment.challenge.port.out.PlanetDatabasePortOut;
@@ -14,10 +14,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.stream.Collectors;
 
 @Service

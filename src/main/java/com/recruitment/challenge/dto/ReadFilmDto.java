@@ -4,11 +4,11 @@ import com.recruitment.challenge.domain.Film;
 
 public class ReadFilmDto {
 
-    private String title;
+    private final String title;
 
-    private String director;
+    private final String director;
 
-    private String openingCrawl;
+    private final String openingCrawl;
 
     public ReadFilmDto(Film film) {
         this.title = film.getTitle();

@@ -6,10 +6,12 @@ import com.recruitment.challenge.dto.CreatePlanetDto;
 import com.recruitment.challenge.dto.ErrorDto;
 import com.recruitment.challenge.dto.PaginatePlanetFilters;
 import com.recruitment.challenge.dto.ReadPlanetDto;
-import com.recruitment.challenge.mocks.PlanetMock;
 import com.recruitment.challenge.mocks.HelperPage;
+import com.recruitment.challenge.mocks.PlanetMock;
 import com.recruitment.challenge.port.in.PlanetPortIn;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -26,7 +28,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
@@ -75,6 +76,7 @@ class HttpPlanetAdapterInTest {
                         String.class);
 
                 assertNull(response.getBody());
+                assertNotNull(response.getHeaders().getLocation());
                 assertEquals("/star-wars/v1/planets/12345", response.getHeaders().getLocation().toString());
             } finally {
                 clearMocks();
@@ -94,6 +96,7 @@ class HttpPlanetAdapterInTest {
                         ErrorDto.class);
 
                 assertEquals(response.getStatusCode(), BAD_REQUEST);
+                assertNotNull(response.getBody());
                 assertEquals(response.getBody().getMessage(), "name must not be blank");
                 assertEquals(response.getBody().getStatusCode(), BAD_REQUEST.value());
             } finally {
@@ -114,6 +117,7 @@ class HttpPlanetAdapterInTest {
                         ErrorDto.class);
 
                 assertEquals(response.getStatusCode(), BAD_REQUEST);
+                assertNotNull(response.getBody());
                 assertEquals(response.getBody().getMessage(), "climate must not be blank");
                 assertEquals(response.getBody().getStatusCode(), BAD_REQUEST.value());
             } finally {
@@ -134,6 +138,7 @@ class HttpPlanetAdapterInTest {
                         ErrorDto.class);
 
                 assertEquals(response.getStatusCode(), BAD_REQUEST);
+                assertNotNull(response.getBody());
                 assertEquals(response.getBody().getMessage(), "ground must not be blank");
                 assertEquals(response.getBody().getStatusCode(), BAD_REQUEST.value());
             } finally {

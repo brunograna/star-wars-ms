@@ -19,12 +19,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -96,9 +95,7 @@ public class PlanetCoreTest {
         public void findById_shouldThrowExceptionWhenParamIsNull() {
             mockFields();
             try {
-                Throwable exception = assertThrows(ConstraintViolationException.class, () -> {
-                    planetCore.findById(null);
-                });
+                Throwable exception = assertThrows(ConstraintViolationException.class, () -> planetCore.findById(null));
             } finally {
                 clearMocks();
             }
@@ -145,9 +142,8 @@ public class PlanetCoreTest {
         public void deleteById_shouldThrowExceptionWhenParamIsNull() {
             mockFields();
             try {
-                Throwable exception = assertThrows(ConstraintViolationException.class, () -> {
-                    planetCore.deleteById(null);
-                });
+                Throwable exception = assertThrows(ConstraintViolationException.class,
+                        () -> planetCore.deleteById(null));
             } finally {
                 clearMocks();
             }
@@ -289,7 +285,7 @@ public class PlanetCoreTest {
                 var databaseOutput = PlanetMock.success();
                 databaseOutput.setId("12345");
 
-                var pageMock = new PageImpl<>(Arrays.asList(databaseOutput), PageRequest.of(0, 5), 1);
+                var pageMock = new PageImpl<>(Collections.singletonList(databaseOutput), PageRequest.of(0, 5), 1);
 
                 doReturn(pageMock).when(databaseMock).findAll(any());
 
@@ -322,7 +318,7 @@ public class PlanetCoreTest {
                     var databaseOutput = PlanetMock.success();
                     databaseOutput.setId("12345");
 
-                    var pageMock = new PageImpl<>(Arrays.asList(databaseOutput), PageRequest.of(0, 5), 1);
+                    var pageMock = new PageImpl<>(Collections.singletonList(databaseOutput), PageRequest.of(0, 5), 1);
 
                     doReturn(pageMock).when(databaseMock).findAll(any());
 
@@ -347,7 +343,10 @@ public class PlanetCoreTest {
                     var databaseOutput = PlanetMock.success();
                     databaseOutput.setId("12345");
 
-                    var pageMock = new PageImpl<>(Arrays.asList(databaseOutput), PageRequest.of(0, 5), 1);
+                    var pageMock = new PageImpl<>(
+                            Collections.singletonList(databaseOutput),
+                            PageRequest.of(0, 5),
+                            1);
 
                     doReturn(pageMock).when(databaseMock).findAll(any());
 

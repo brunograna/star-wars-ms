@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.recruitment.challenge.dto.ReadPlanetDto;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,6 @@ public class HelperPage<T> extends PageImpl<T> {
     }
 
     public HelperPage() {
-        super(new ArrayList<T>());
+        super(new ArrayList<>());
     }
 }
