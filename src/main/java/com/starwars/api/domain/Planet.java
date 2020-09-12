@@ -19,8 +19,6 @@ public class Planet {
 
     private String ground;
 
-    private List<Film> films;
-
     private Instant createdAt;
 
     private Instant updatedAt;
@@ -61,18 +59,6 @@ public class Planet {
         return this;
     }
 
-    public List<Film> getFilms() {
-        if (films == null) {
-            films = new ArrayList<>();
-        }
-        return films;
-    }
-
-    public Planet setFilms(List<Film> films) {
-        this.films = films;
-        return this;
-    }
-
     public Planet setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
         return this;
@@ -89,5 +75,17 @@ public class Planet {
     public Planet setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Planet{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", climate='" + climate + '\'' +
+                ", ground='" + ground + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

@@ -7,6 +7,7 @@ import com.starwars.api.dto.PaginatePlanetFilters;
 import com.starwars.api.dto.ReadPlanetDto;
 import com.starwars.api.port.in.PlanetPortIn;
 import com.starwars.api.port.out.PlanetDatabasePortOut;
+import com.starwars.api.port.out.StarWarsApiPortOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,10 +24,14 @@ import java.util.stream.Collectors;
 public class PlanetCore implements PlanetPortIn {
 
     private final Logger logger = LoggerFactory.getLogger(PlanetCore.class);
-    private final PlanetDatabasePortOut database;
 
-    public PlanetCore(PlanetDatabasePortOut database) {
+    private final PlanetDatabasePortOut database;
+    private final StarWarsApiPortOut starWarsApi;
+
+    public PlanetCore(final PlanetDatabasePortOut database,
+                      final StarWarsApiPortOut starWarsApi) {
         this.database = database;
+        this.starWarsApi = starWarsApi;
     }
 
     @Override
@@ -42,7 +47,10 @@ public class PlanetCore implements PlanetPortIn {
 
         var mappedContent = result.getContent()
                                     .stream()
-                                    .map(ReadPlanetDto::new)
+                                    .map((planet) -> {
+                                        var appearances  = this.starWarsApi.getFilmAppearancesByPlanet(planet.getName());
+                                        return new ReadPlanetDto(planet, appearances);
+                                    })
                                     .collect(Collectors.toList());
 
         return new PageImpl<>(mappedContent, result.getPageable(), result.getTotalElements());
@@ -56,9 +64,11 @@ public class PlanetCore implements PlanetPortIn {
 
         if (planet.isEmpty()) throw new NotFoundException();
 
+        var appearances = this.starWarsApi.getFilmAppearancesByPlanet(planet.get().getName());
+
         this.logger.info("find-all; end; success; id=\"{}\";", id);
 
-        return new ReadPlanetDto(planet.get());
+        return new ReadPlanetDto(planet.get(), appearances);
     }
 
     @Override

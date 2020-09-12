@@ -7,36 +7,37 @@ import java.util.stream.Collectors;
 
 public class ReadPlanetDto {
 
-    private final String id;
+    private String id;
 
-    private final String name;
+    private String name;
 
-    private final String climate;
+    private String climate;
 
-    private final String ground;
+    private int filmAppearances;
 
-    private final List<ReadFilmDto> films;
+    private String ground;
 
-    public ReadPlanetDto(Planet planet) {
+    public ReadPlanetDto() {
+    }
+
+    public ReadPlanetDto(Planet planet, int filmAppearances) {
         this.id = planet.getId();
         this.name = planet.getName();
         this.climate = planet.getClimate();
         this.ground = planet.getGround();
-        this.films = planet.getFilms().stream()
-                                        .map(ReadFilmDto::new)
-                                        .collect(Collectors.toList());
+        this.filmAppearances = filmAppearances;
     }
 
     public ReadPlanetDto(final String id,
-                        final String name,
+                         final String name,
                          final String climate,
                          final String ground,
-                         final List<ReadFilmDto> films) {
+                         final int filmAppearances) {
         this.id = id;
         this.name = name;
         this.climate = climate;
         this.ground = ground;
-        this.films = films;
+        this.filmAppearances = filmAppearances;
     }
 
     public String getId() {
@@ -55,17 +56,43 @@ public class ReadPlanetDto {
         return ground;
     }
 
-    public List<ReadFilmDto> getFilms() {
-        return films;
+    public int getFilmAppearances() {
+        return filmAppearances;
+    }
+
+    public ReadPlanetDto setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public ReadPlanetDto setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ReadPlanetDto setClimate(String climate) {
+        this.climate = climate;
+        return this;
+    }
+
+    public ReadPlanetDto setFilmAppearances(int filmAppearances) {
+        this.filmAppearances = filmAppearances;
+        return this;
+    }
+
+    public ReadPlanetDto setGround(String ground) {
+        this.ground = ground;
+        return this;
     }
 
     @Override
     public String toString() {
         return "ReadPlanetDto{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", climate='" + climate + '\'' +
+                ", filmAppearances=" + filmAppearances +
                 ", ground='" + ground + '\'' +
-                ", films=" + films +
                 '}';
     }
 }

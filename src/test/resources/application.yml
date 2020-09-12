@@ -20,6 +20,6 @@ spring:
 
 app:
   star-wars-api:
-    base-url: https://swapi.dev/api
+    base-url: https://test.swapi.dev/api
     resources:
-      planets: /planets/1/
+      planets: /planets

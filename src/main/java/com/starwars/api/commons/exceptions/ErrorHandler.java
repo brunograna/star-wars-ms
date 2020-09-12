@@ -111,6 +111,14 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(AdapterOutboundException.class)
+    public @ResponseBody
+    ResponseEntity<?> handleAdapterOutboundException(HttpServletRequest req, Exception ex) {
+        logger.error("handle-adapter-outbound-exception; exception; system; exception=\"{}\";", getStackTrace(ex));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
     private String buildErrorItems(BindingResult bindingResult) {
         if (bindingResult.getFieldErrors().isEmpty()) {
             return "";

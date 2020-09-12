@@ -6,6 +6,7 @@ import com.starwars.api.dto.CreatePlanetDto;
 import com.starwars.api.dto.PaginatePlanetFilters;
 import com.starwars.api.mocks.PlanetMock;
 import com.starwars.api.port.out.PlanetDatabasePortOut;
+import com.starwars.api.port.out.StarWarsApiPortOut;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@DisplayName("PlanetCore")
+@DisplayName("Planet Core")
 public class PlanetCoreTest {
 
     @Autowired
@@ -37,9 +38,14 @@ public class PlanetCoreTest {
     PlanetDatabasePortOut database;
     @Mock
     PlanetDatabasePortOut databaseMock;
+    @Autowired
+    StarWarsApiPortOut starWarsApi;
+    @Mock
+    StarWarsApiPortOut starWarsApiMock;
 
     private void mockFields() {
         ReflectionTestUtils.setField(planetCore, "database", databaseMock);
+        ReflectionTestUtils.setField(planetCore, "starWarsApi", starWarsApiMock);
     }
 
     @Nested
@@ -53,23 +59,18 @@ public class PlanetCoreTest {
                 var input = PlanetMock.success();
 
                 doReturn(Optional.of(input)).when(databaseMock).findById(anyString());
+                doReturn(3).when(starWarsApiMock).getFilmAppearancesByPlanet(anyString());
 
                 var output = planetCore.findById("12345");
 
                 verify(databaseMock, times(1)).findById(anyString());
 
-                assertEquals(input.getClimate(), output.getClimate());
-                assertEquals(input.getGround(), output.getGround());
-                assertEquals(input.getName(), output.getName());
-
-                AtomicInteger index = new AtomicInteger(0);
-                output.getFilms().forEach((filmOutput) -> {
-                    assertEquals(input.getFilms().get(index.get()).getDirector(), filmOutput.getDirector());
-                    assertEquals(input.getFilms().get(index.get()).getOpeningCrawl(), filmOutput.getOpeningCrawl());
-                    assertEquals(input.getFilms().get(index.get()).getTitle(), filmOutput.getTitle());
-                    index.getAndIncrement();
+                assertAll(() -> {
+                    assertEquals(input.getClimate(), output.getClimate());
+                    assertEquals(input.getGround(), output.getGround());
+                    assertEquals(input.getName(), output.getName());
+                    assertEquals(3, output.getFilmAppearances());
                 });
-
 
             } finally {
                 clearMocks();
@@ -177,7 +178,6 @@ public class PlanetCoreTest {
 
                 var outputCaptor = planetArgumentCaptor.getValue();
 
-                assertTrue(outputCaptor.getFilms() == null || outputCaptor.getFilms().isEmpty());
                 assertEquals(outputCaptor.getName(), input.getName());
                 assertEquals(outputCaptor.getGround(), input.getGround());
                 assertEquals(outputCaptor.getClimate(), input.getClimate());
@@ -260,8 +260,8 @@ public class PlanetCoreTest {
         public void create_shouldThrowExceptionWhenParamIsNull() {
             mockFields();
             try {
-                Throwable exception = assertThrows(ConstraintViolationException.class, () -> {
-                    var output = planetCore.create(null);
+                assertThrows(ConstraintViolationException.class, () -> {
+                    planetCore.create(null);
                 });
             } finally {
                 clearMocks();
@@ -285,6 +285,8 @@ public class PlanetCoreTest {
                 var databaseOutput = PlanetMock.success();
                 databaseOutput.setId("12345");
 
+                doReturn(5).when(starWarsApiMock).getFilmAppearancesByPlanet(anyString());
+
                 var pageMock = new PageImpl<>(Collections.singletonList(databaseOutput), PageRequest.of(0, 5), 1);
 
                 doReturn(pageMock).when(databaseMock).findAll(any());
@@ -293,17 +295,26 @@ public class PlanetCoreTest {
 
                 var output = planetCore.findAll(input);
 
-                assertEquals(output.getTotalElements(), 1);
-                assertEquals(output.getSize(), 5);
-                assertEquals(output.getNumber(), 0);
-
                 verify(databaseMock, times(1)).findAll(filtersArgumentCaptor.capture());
 
                 var outputCaptor = filtersArgumentCaptor.getValue();
 
-                assertEquals(outputCaptor.getPage(), input.getPage());
-                assertEquals(outputCaptor.getPerPage(), input.getPerPage());
-                assertEquals(outputCaptor.getName(), input.getName());
+                assertAll(() -> {
+                    assertEquals(output.getTotalElements(), 1);
+                    assertEquals(output.getSize(), 5);
+                    assertEquals(output.getNumber(), 0);
+
+                    assertEquals(outputCaptor.getPage(), input.getPage());
+                    assertEquals(outputCaptor.getPerPage(), input.getPerPage());
+                    assertEquals(outputCaptor.getName(), input.getName());
+
+                    output.getContent().forEach((planet) -> {
+                        assertEquals(planet.getClimate(), databaseOutput.getClimate());
+                        assertEquals(planet.getGround(), databaseOutput.getGround());
+                        assertEquals(planet.getName(), databaseOutput.getName());
+                        assertEquals(planet.getFilmAppearances(), 5);
+                    });
+                });
             } finally {
                 clearMocks();
             }
@@ -379,5 +390,6 @@ public class PlanetCoreTest {
 
     private void clearMocks() {
         ReflectionTestUtils.setField(planetCore, "database", database);
+        ReflectionTestUtils.setField(planetCore, "starWarsApi", starWarsApi);
     }
 }

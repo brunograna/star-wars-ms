@@ -33,7 +33,7 @@ import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = StarWarsMsApplication.class, webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DisplayName("HTTP Planet API")
+@DisplayName("Http Planet API")
 class HttpPlanetAdapterInTest {
 
     @Autowired
@@ -154,7 +154,7 @@ class HttpPlanetAdapterInTest {
         public void findById_shouldGetPlanet() {
             mockFields();
             try {
-                var input = new ReadPlanetDto("12345", "name", "climate", "ground", null);
+                var input = new ReadPlanetDto("12345", "name", "climate", "ground", 1);
 
                 doReturn(input).when(planetPortInMock).findById(any());
 
@@ -169,7 +169,7 @@ class HttpPlanetAdapterInTest {
                 assertEquals(response.getBody().getClimate(), input.getClimate());
                 assertEquals(response.getBody().getGround(), input.getGround());
                 assertEquals(response.getBody().getName(), input.getName());
-                assertEquals(response.getBody().getFilms(), input.getFilms());
+                assertEquals(response.getBody().getFilmAppearances(), input.getFilmAppearances());
 
             } finally {
                 clearMocks();
@@ -279,14 +279,7 @@ class HttpPlanetAdapterInTest {
                     assertEquals(planetResponse.getName(), coreOutput.getContent().get(index.get()).getName());
                     assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
                     assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
-
-                    AtomicInteger secondIndex = new AtomicInteger();
-                    planetResponse.getFilms().forEach((filmResponse) -> {
-                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
-                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
-                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
-                        secondIndex.getAndIncrement();
-                    });
+                    assertEquals(planetResponse.getFilmAppearances(), coreOutput.getContent().get(index.get()).getFilmAppearances());
 
                     index.getAndIncrement();
                 });
@@ -336,14 +329,7 @@ class HttpPlanetAdapterInTest {
                     assertEquals(planetResponse.getName(), coreOutput.getContent().get(index.get()).getName());
                     assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
                     assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
-
-                    AtomicInteger secondIndex = new AtomicInteger();
-                    planetResponse.getFilms().forEach((filmResponse) -> {
-                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
-                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
-                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
-                        secondIndex.getAndIncrement();
-                    });
+                    assertEquals(planetResponse.getFilmAppearances(), coreOutput.getContent().get(index.get()).getFilmAppearances());
 
                     index.getAndIncrement();
                 });
@@ -357,9 +343,7 @@ class HttpPlanetAdapterInTest {
         public void findAll_shouldFindAllWhenPageAndPerPageIsNotSetAndNameFilterIsSet() {
             mockFields();
             try {
-                var coreOutput = PlanetMock.list(0, 50);
-                coreOutput.getContent().get(0).setName("planetName");
-                coreOutput.getContent().get(1).setName("planetName");
+                var coreOutput = PlanetMock.listByName(0, 50, "planetName");
                 doReturn(coreOutput).when(planetPortInMock).findAll(any());
 
                 var url = UriComponentsBuilder
@@ -394,14 +378,7 @@ class HttpPlanetAdapterInTest {
                     assertEquals(planetResponse.getName(), "planetName");
                     assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
                     assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
-
-                    AtomicInteger secondIndex = new AtomicInteger();
-                    planetResponse.getFilms().forEach((filmResponse) -> {
-                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
-                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
-                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
-                        secondIndex.getAndIncrement();
-                    });
+                    assertEquals(planetResponse.getFilmAppearances(), coreOutput.getContent().get(index.get()).getFilmAppearances());
 
                     index.getAndIncrement();
                 });
@@ -415,9 +392,8 @@ class HttpPlanetAdapterInTest {
         public void findAll_shouldFindAllWhenPageAndPerPageAndNameFilterIsSet() {
             mockFields();
             try {
-                var coreOutput = PlanetMock.list(1, 2);
-                coreOutput.getContent().get(0).setName("planetName");
-                coreOutput.getContent().get(1).setName("planetName");
+                var coreOutput = PlanetMock.listByName(1, 2, "planetName");
+
                 doReturn(coreOutput).when(planetPortInMock).findAll(any());
 
                 var url = UriComponentsBuilder
@@ -454,14 +430,8 @@ class HttpPlanetAdapterInTest {
                     assertEquals(planetResponse.getName(), "planetName");
                     assertEquals(planetResponse.getGround(), coreOutput.getContent().get(index.get()).getGround());
                     assertEquals(planetResponse.getClimate(), coreOutput.getContent().get(index.get()).getClimate());
+                    assertEquals(planetResponse.getFilmAppearances(), coreOutput.getContent().get(index.get()).getFilmAppearances());
 
-                    AtomicInteger secondIndex = new AtomicInteger();
-                    planetResponse.getFilms().forEach((filmResponse) -> {
-                        assertEquals(filmResponse.getDirector(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getDirector());
-                        assertEquals(filmResponse.getOpeningCrawl(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getOpeningCrawl());
-                        assertEquals(filmResponse.getTitle(), coreOutput.getContent().get(index.get()).getFilms().get(secondIndex.get()).getTitle());
-                        secondIndex.getAndIncrement();
-                    });
 
                     index.getAndIncrement();
                 });

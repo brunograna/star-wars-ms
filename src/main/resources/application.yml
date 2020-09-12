@@ -22,4 +22,4 @@ app:
   star-wars-api:
     base-url: https://swapi.dev/api
     resources:
-      planets: /planets/1/
+      planets: /planets/
