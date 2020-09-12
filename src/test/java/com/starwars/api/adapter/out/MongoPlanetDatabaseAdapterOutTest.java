@@ -14,7 +14,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = StarWarsMsApplication.class, webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @DisplayName("Mongo Database Adapter")
 class MongoPlanetDatabaseAdapterOutTest {
 
@@ -23,8 +23,6 @@ class MongoPlanetDatabaseAdapterOutTest {
 
     @Autowired
     private MongoPlanetDatabaseAdapterOut mongoPlanetDatabaseAdapterOut;
-    @Mock
-    private MongoPlanetDatabaseAdapterOut mongoPlanetDatabaseAdapterOutMock;
 
     private Planet planetOne;
     private Planet planetTwo;

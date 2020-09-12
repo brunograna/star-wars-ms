@@ -22,6 +22,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -161,7 +162,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         "/star-wars/v1/planets/12345",
                         GET,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         ReadPlanetDto.class);
 
                 assertEquals(response.getStatusCode(), OK);
@@ -184,7 +185,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         "/star-wars/v1/planets/12345",
                         GET,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         ReadPlanetDto.class);
 
                 assertEquals(response.getStatusCode(), NOT_FOUND);
@@ -208,7 +209,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         "/star-wars/v1/planets/12345",
                         DELETE,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         ReadPlanetDto.class);
 
                 assertEquals(response.getStatusCode(), NO_CONTENT);
@@ -227,7 +228,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         "/star-wars/v1/planets/12345",
                         DELETE,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         ReadPlanetDto.class);
 
                 assertEquals(response.getStatusCode(), NOT_FOUND);
@@ -256,7 +257,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         "/star-wars/v1/planets",
                         GET,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
 
                 verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
@@ -306,7 +307,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         url,
                         GET,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
 
                 verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
@@ -355,7 +356,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         url,
                         GET,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
 
                 verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
@@ -407,7 +408,7 @@ class HttpPlanetAdapterInTest {
                 var response = restTemplate.exchange(
                         url,
                         GET,
-                        new HttpEntity<>(null),
+                        new HttpEntity<>(new HttpHeaders()),
                         new ParameterizedTypeReference<HelperPage<ReadPlanetDto>>() {});
 
                 verify(planetPortInMock, times(1)).findAll(filtersArgumentCaptorCaptor.capture());
