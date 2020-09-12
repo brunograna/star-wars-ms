@@ -22,6 +22,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Set;
 
+import static org.apache.commons.lang3.exception.ExceptionUtils.getMessage;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace;
 
 @ControllerAdvice
@@ -69,7 +70,7 @@ public class ErrorHandler {
     @ExceptionHandler(NotFoundException.class)
     public @ResponseBody
     ResponseEntity<?> handleNotFound(HttpServletRequest req, Exception ex) {
-        logger.warn("handle-not-found; exception; system; exception=\"{}\";", getStackTrace(ex));
+        logger.warn("handle-not-found; exception; system; message=\"{}\";", getMessage(ex));
         return ResponseEntity.notFound().build();
     }
 

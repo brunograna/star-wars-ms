@@ -4,11 +4,11 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: challenge-mongo-container
+    container_name: star-wars-mongo-container
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: backend
       MONGO_INITDB_ROOT_PASSWORD: secret
-      MONGO_INITDB_DATABASE: challenge-db
+      MONGO_INITDB_DATABASE: star-wars-db
     ports:
       - 27017:27017

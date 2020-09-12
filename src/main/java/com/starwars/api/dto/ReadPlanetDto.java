@@ -2,9 +2,6 @@ package com.starwars.api.dto;
 
 import com.starwars.api.domain.Planet;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class ReadPlanetDto {
 
     private String id;

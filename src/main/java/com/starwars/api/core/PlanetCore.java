@@ -42,9 +42,7 @@ public class PlanetCore implements PlanetPortIn {
         this.logger.info("find-all; start;");
 
         var result = this.database.findAll(filters);
-
-        this.logger.info("find-all; end; success;");
-
+        
         var mappedContent = result.getContent()
                                     .stream()
                                     .map((planet) -> {
@@ -52,6 +50,8 @@ public class PlanetCore implements PlanetPortIn {
                                         return new ReadPlanetDto(planet, appearances);
                                     })
                                     .collect(Collectors.toList());
+
+        this.logger.info("find-all; end; success;");
 
         return new PageImpl<>(mappedContent, result.getPageable(), result.getTotalElements());
     }
