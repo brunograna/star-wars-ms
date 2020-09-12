@@ -3,7 +3,7 @@ server:
 
 logging:
   file:
-    name: /logs/star-wars-ms
+    name: /logs/star-wars-ms/tests
 
 spring:
   main:
@@ -11,12 +11,12 @@ spring:
   data:
     mongodb:
       auto-index-creation: false
-      database: star-wars-db
-      uri: mongodb://backend:secret@localhost:27017/admin
+      database: tests-star-wars-db
+      uri: test-database
   application:
     name: star-wars-ms
   profiles:
-    active: dev
+    active: test
 
 app:
   star-wars-api:
