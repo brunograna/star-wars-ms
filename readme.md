@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img alt="Star Wars Ms" src="https://github.com/brunograna/star-wars-ms/blob/master/star-wars-logo.png" width="200px" />
+    <img alt="Star Wars Ms" src="https://github.com/brunograna/star-wars-ms/blob/master/star-wars-logo.png" width="300px" />
 </h1>
 
 <h3 align="center">
@@ -29,5 +29,41 @@
 - Desenvolver uma api Rest utilizando a Arquitetura Hexagonal (Ports and Adapters Architecture)
 - Consumir uma api externa para resgatar a quantidade de aparições de um planeta em um filme do Star Wars
 
+## :file_folder: Resources
+
+## Api Base Url
+
+```
+${HOST_URL}/star-wars/v1
+```
+
+## /planets
+
+Endpoint
+
+```
+${HOST_URL}/star-wars/v1/planets
+```
+
+Json Schema Definition:
+
+```
+type: object
+properties:
+  name:
+    type: string
+    description: nome do planeta
+  ground:
+    type: string
+    description: nome/descrição do solo do planeta
+  climate:
+    type: string
+    description: descrição do clima do planeta
+  filmAppearances:
+    type: number
+    description: Quantidade de aparições deste planeta em um filme
+```
+
+---
 
 Desenvolvido por Bruno Garcia :wave: [Conheça mais sobre o meu trabalho no Linkedin](https://www.linkedin.com/in/dev-brunogarcia/)
