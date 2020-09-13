@@ -8,15 +8,16 @@
 
 <p align="center">
 
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
-  <img alt="Java" src="https://img.shields.io/badge/language-java-green">
-  <img alt="Version 1.0" src="https://img.shields.io/badge/version-1.0-yellowgreen">
+  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-%2304D361">
+  <img alt="Language: Java" src="https://img.shields.io/badge/language-java-green">
+  <img alt="Database: Mongodb" src="https://img.shields.io/badge/database-mongodb-green">
+  <img alt="Version: 1.0" src="https://img.shields.io/badge/version-1.0-yellowgreen">
   
 </p>
 
 ## :rocket: Features do Projeto
 
-* Listar Planetas com a possibilidade de filtro por nome
+* Listar Planetas com paginação e a possibilidade de filtro por nome
 * Criar um planeta
 * Buscar um planeta por id
 * Deletar um planeta por id
