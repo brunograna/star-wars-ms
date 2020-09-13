@@ -16,10 +16,10 @@
 
 ## :rocket: Features do Projeto
 
-* Listagem de Planetas com possibilidade de filtragem por nome
-* Criação de um planeta
-* Busca de um planeta por Id
-* Deletar um planeta por Id
+* Listar Planetas com a possibilidade de filtro por nome
+* Criar um planeta
+* Buscar um planeta por id
+* Deletar um planeta por id
     
 :mag: Baixe o projeto e teste você mesmo.
 
@@ -27,11 +27,11 @@
 
 - Utilizar o Java 11 com Spring Boot 2.4.0-M2 e JUnit 5
 - Desenvolver uma api Rest utilizando a Arquitetura Hexagonal (Ports and Adapters Architecture)
-- Consumir uma api externa para resgatar a quantidade de aparições de um planeta em um filme do Star Wars
+- Consumir uma [api externa](https://swapi.dev/about) para resgatar a quantidade de aparições em filmes de um planeta
 
 ## :file_folder: Resources
 
-## Api Base Url
+Base Url
 
 ```
 ${HOST_URL}/star-wars/v1
