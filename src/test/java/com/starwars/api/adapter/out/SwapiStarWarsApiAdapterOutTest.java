@@ -108,6 +108,46 @@ public class SwapiStarWarsApiAdapterOutTest {
                 clearMock();
             }
         }
+
+        @Test
+        void getFilmAppearancesByPlanet_shouldThrowOutboundExceptionWhenBodyIsEmpty() {
+            mockFields();
+            try {
+                assertThrows(AdapterOutboundException.class, () -> {
+
+                    when(restTemplateMock.exchange(
+                            anyString(),
+                            eq(HttpMethod.GET),
+                            ArgumentMatchers.any(),
+                            ArgumentMatchers.<ParameterizedTypeReference<SwapiResponseDto<SwapiPlanetDto>>>any())
+                    ).thenReturn(new ResponseEntity<>(null, OK));
+
+                    swapiStarWarsApiAdapterOut.getFilmAppearancesByPlanet("planetName");
+                });
+            } finally {
+                clearMock();
+            }
+        }
+
+        @Test
+        void getFilmAppearancesByPlanet_shouldThrowOutboundExceptionWhenStatusIsNotOk() {
+            mockFields();
+            try {
+                assertThrows(AdapterOutboundException.class, () -> {
+
+                    when(restTemplateMock.exchange(
+                            anyString(),
+                            eq(HttpMethod.GET),
+                            ArgumentMatchers.any(),
+                            ArgumentMatchers.<ParameterizedTypeReference<SwapiResponseDto<SwapiPlanetDto>>>any())
+                    ).thenReturn(new ResponseEntity<>(null, HttpStatus.MOVED_PERMANENTLY));
+
+                    swapiStarWarsApiAdapterOut.getFilmAppearancesByPlanet("planetName");
+                });
+            } finally {
+                clearMock();
+            }
+        }
     }
 
     public void clearMock() {

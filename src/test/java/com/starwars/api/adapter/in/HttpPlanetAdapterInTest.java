@@ -78,7 +78,7 @@ class HttpPlanetAdapterInTest {
 
                 assertNull(response.getBody());
                 assertNotNull(response.getHeaders().getLocation());
-                assertEquals("/star-wars/v1/planets/12345", response.getHeaders().getLocation().toString());
+                assertTrue(response.getHeaders().getLocation().toString().contains("/star-wars/v1/planets/12345"));
             } finally {
                 clearMocks();
             }

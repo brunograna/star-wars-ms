@@ -7,6 +7,7 @@ import com.starwars.api.port.in.PlanetPortIn;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -52,7 +53,13 @@ public class HttpPlanetAdapterIn {
 
         String id = this.planetPortIn.create(planet);
 
-        return ResponseEntity.created(URI.create("/star-wars/v1/planets/" + id)).build();
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }
