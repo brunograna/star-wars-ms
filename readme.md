@@ -32,7 +32,7 @@
 
 ## :file_folder: Resources
 
-Base Url
+**Base Url**
 
 ```
 ${HOST_URL}/star-wars/v1
@@ -40,13 +40,13 @@ ${HOST_URL}/star-wars/v1
 
 ## /planets
 
-Endpoint
+**Endpoint**
 
 ```
 ${HOST_URL}/star-wars/v1/planets
 ```
 
-Json Schema Definition:
+**Json Schema Definition:**
 
 ```
 type: object
@@ -62,7 +62,7 @@ properties:
     description: descrição do clima do planeta
   filmAppearances:
     type: number
-    description: Quantidade de aparições deste planeta em um filme
+    description: quantidade de aparições deste planeta em um filme
 ```
 
 ---
