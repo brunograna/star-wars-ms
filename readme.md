@@ -17,17 +17,17 @@
 
 ## :rocket: Features do Projeto
 
-* Listar Planetas com paginação e a possibilidade de filtro por nome
+* Listar planetas com paginação e a possibilidade de filtro por nome
 * Criar um planeta
-* Buscar um planeta por id
-* Deletar um planeta por id
+* Buscar um planeta por **id**
+* Deletar um planeta por **id**
     
 :mag: Baixe o projeto e teste você mesmo.
 
 ## :dart: Objetivos do desenvolvimento
 
 - Utilizar o Java 11 com Spring Boot 2.4.0-M2 e JUnit 5
-- Desenvolver uma api Rest utilizando a Arquitetura Hexagonal (Ports and Adapters Architecture)
+- Desenvolver uma *api rest* utilizando a Arquitetura Hexagonal (*Ports and Adapters Architecture*)
 - Consumir uma [api externa](https://swapi.dev/about) para resgatar a quantidade de aparições em filmes de um planeta
 
 ## :file_folder: Resources
