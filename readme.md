@@ -56,7 +56,7 @@ properties:
     description: nome do planeta
   ground:
     type: string
-    description: nome/descrição do solo do planeta
+    description: descrição do solo do planeta
   climate:
     type: string
     description: descrição do clima do planeta
